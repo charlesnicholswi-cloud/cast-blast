@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cast &amp; Blast Weekly — Week 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Bitter:ital,wght@0,400;0,600;0,700;1,400&family=Allerta+Stencil&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --paper-alt:#F0EEE9;
+    --wood:#241B14;
+    --wood-soft:#382A1E;
+    --ink:#2A2019;
+    --ink-soft:#5C4B38;
+    --blaze:#D9540E;
+    --blaze-dark:#A63E09;
+    --rust:#8C5327;
+    --forest:#3A5233;
+    --forest-dark:#2A3D25;
+    --water:#2E6169;
+    --water-dark:#204449;
+    --line:rgba(42,32,25,0.22);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background-color:var(--paper);
+    background-image:
+      repeating-radial-gradient(circle at 50% 0%, rgba(42,32,25,0.03) 0, rgba(42,32,25,0.03) 1px, transparent 1px, transparent 34px);
+    color:var(--ink);
+    font-family:'Bitter', Georgia, serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.display{
+    font-family:'Rye', 'Georgia', serif;
+    font-weight:400;
+    line-height:1.05;
+    margin:0;
+  }
+
+  .stencil{ font-family:'Allerta Stencil', 'Courier New', monospace; }
+
+  p{margin:0 0 1em;}
+  p:last-child{margin-bottom:0;}
+
+  .wrap{ max-width:760px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- MASTHEAD ---------- */
+  .masthead{
+    background:var(--wood);
+    background-image:linear-gradient(180deg, var(--wood) 0%, var(--wood-soft) 100%);
+    color:var(--paper);
+    padding:40px 0 40px;
+    position:relative;
+    text-align:center;
+  }
+  .ridge{ display:block; width:100%; height:40px; }
+  .nameplate{
+    font-size:clamp(2.1rem, 11vw, 5.2rem);
+    color:var(--paper);
+    display:flex; align-items:center; justify-content:center; gap:14px;
+  }
+  .nameplate .amp{color:var(--blaze);}
+  .kicker{
+    margin:12px auto 0;
+    font-family:'Bitter', serif;
+    font-style:italic;
+    font-size:clamp(0.85rem, 2.2vw, 1.15rem);
+    color:var(--paper-alt);
+    white-space:nowrap;
+  }
+
+  /* ---------- WELCOME LETTER STYLE ---------- */
+  .intro{ padding:46px 0 8px; }
+  .intro .label{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.8rem; letter-spacing:0.12em; color:var(--blaze-dark);
+    border-bottom:2px solid var(--blaze); padding-bottom:5px; margin-bottom:18px;
+    text-transform:uppercase;
+  }
+  .intro p{ max-width:66ch; color:var(--ink-soft); margin:0 0 1em; }
+  .intro p:last-child{ margin-bottom:0; }
+  .intro p strong{ color:var(--ink); }
+
+  /* ---------- SECTION BANNER ---------- */
+  .banner{
+    margin:46px 0 6px; padding:20px 0;
+    border-top:3px solid var(--forest); border-bottom:3px solid var(--forest);
+    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  }
+  .banner h2{ font-size:clamp(1.5rem, 5vw, 2.3rem); color:var(--ink); }
+  .banner .sub{ font-size:0.95rem; color:var(--ink-soft); margin-top:6px; }
+  .pine{ flex-shrink:0; opacity:0.65; }
+
+  .recap p{ color:var(--ink-soft); max-width:64ch; margin:14px 0 0; }
+  .recap p:first-child{margin-top:18px;}
+  .recap strong{ color:var(--ink); }
+
+  /* ---------- TAG CARDS ---------- */
+  .tag-card{
+    margin:34px 0; background:var(--paper); border:1px solid var(--line);
+    box-shadow:0 1px 0 var(--line); position:relative;
+  }
+  .tag-card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:7px; }
+  .tier-trophy::before{ background:var(--blaze); }
+  .tier-harvest::before{ background:var(--rust); }
+  .tier-release::before{ background:var(--water); }
+
+  .tag-stub{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 20px 12px 24px; font-size:0.78rem; letter-spacing:0.06em; color:var(--ink-soft);
+  }
+  .tag-no{ display:inline-flex; align-items:center; gap:7px; }
+  .tag-no .reticle{ color:var(--ink-soft); }
+
+  .tier-badge{
+    padding:4px 10px; border-radius:2px; text-transform:uppercase;
+    font-size:0.7rem; letter-spacing:0.07em; color:var(--paper);
+    font-family:'Allerta Stencil', monospace;
+  }
+  .tier-trophy .tier-badge{ background:var(--blaze); }
+  .tier-harvest .tier-badge{ background:var(--rust); }
+  .tier-release .tier-badge{ background:var(--water); }
+
+  .perf{ border-top:2px dashed var(--line); margin:0 20px; }
+  .tag-body{ padding:20px 24px 26px; }
+
+  .score-row{ display:flex; align-items:flex-end; gap:22px; flex-wrap:wrap; margin-bottom:8px; }
+  .side{ flex:1; min-width:160px; }
+  .side .score{ font-family:'Allerta Stencil', monospace; font-size:clamp(1.4rem, 5vw, 2rem); }
+  .side.win .score{ color:var(--ink); }
+  .side.lose .score{ color:var(--ink-soft); font-size:clamp(1.1rem,4vw,1.5rem); }
+  .side .team-name{ font-size:0.9rem; margin-top:2px; }
+  .side.win .team-name{ font-weight:700; }
+  .side.lose .team-name{ color:var(--ink-soft); }
+
+  .tag-card h3{ font-size:clamp(1.3rem, 4vw, 1.8rem); margin:16px 0 12px; line-height:1.15; }
+  .tier-trophy h3{ color:var(--blaze-dark); }
+  .tier-harvest h3{ color:var(--rust); }
+  .tier-release h3{ color:var(--water-dark); }
+
+  .tag-card .body-copy p{ max-width:64ch; color:var(--ink-soft); }
+  .tag-card .body-copy strong{ color:var(--ink); }
+
+  .ruling{
+    margin-top:18px; padding:12px 16px; border:2px dashed var(--rust); display:block;
+    font-family:'Bitter', serif; font-style:italic; font-size:0.92rem; color:var(--ink-soft);
+    line-height:1.55; background:rgba(140,83,39,0.05);
+  }
+  .ruling .rl-label{
+    display:block; font-family:'Allerta Stencil', monospace; font-style:normal;
+    font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:6px; color:var(--rust);
+  }
+  .ruling strong{ color:var(--ink); font-style:normal; }
+
+  /* ---------- STANDINGS ---------- */
+  .standings-wrap{ margin-top:10px; overflow-x:auto; }
+  table.standings{
+    width:100%; border-collapse:collapse; background:var(--paper); font-size:0.92rem;
+  }
+  table.standings th{
+    text-align:left; font-family:'Allerta Stencil', monospace; font-size:0.7rem;
+    letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-soft);
+    padding:8px 10px; border-bottom:2px solid var(--forest);
+  }
+  table.standings td{ padding:9px 10px; border-bottom:1px solid var(--line); }
+  table.standings td.rank{ font-family:'Allerta Stencil', monospace; color:var(--ink-soft); width:38px; }
+  table.standings td.mgr{ font-weight:700; }
+  table.standings td.team{ color:var(--ink-soft); }
+  table.standings td.record{ font-family:'Allerta Stencil', monospace; text-align:right; }
+  table.standings tr:nth-child(even){ background:rgba(140,83,39,0.05); }
+
+  /* ---------- STATE OF THE LEAGUE ---------- */
+  .state-groups{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-top:18px;
+  }
+  .state-card{
+    background:var(--paper); border:1px solid var(--line); border-top:4px solid var(--accent, var(--forest));
+    padding:14px 16px 16px;
+  }
+  .state-card h4{
+    font-family:'Rye', serif; font-weight:400; font-size:1.05rem; margin-bottom:8px; color:var(--accent, var(--forest));
+  }
+  .state-card p{ font-size:0.88rem; color:var(--ink-soft); }
+
+  /* ---------- TROPHY / AWARD GRIDS ---------- */
+  .trophy-room{ margin-top:52px; }
+  .board{ background:var(--wood-soft); border:1px solid rgba(0,0,0,0.3); padding:26px 22px 12px; margin-top:18px; border-radius:2px; }
+  .board-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; }
+  .plaque{ background:var(--paper); border:1px solid var(--line); border-top:4px solid var(--rust); padding:15px 15px 17px; margin-bottom:14px; }
+  .board-awards .plaque{ border-top-color:var(--forest); }
+  .plaque .mount-no{ font-family:'Allerta Stencil', monospace; font-size:0.68rem; letter-spacing:0.08em; color:var(--ink-soft); text-transform:uppercase; }
+  .plaque h4{ font-family:'Rye', serif; font-weight:400; font-size:1.05rem; color:var(--blaze-dark); margin:7px 0 7px; line-height:1.1; }
+  .board-awards .plaque h4{ color:var(--forest-dark); }
+  .plaque .who{ font-weight:700; font-size:0.92rem; margin-bottom:4px; }
+  .plaque .stat{ font-family:'Allerta Stencil', monospace; font-size:0.74rem; color:var(--ink-soft); margin-bottom:8px; }
+  .plaque p{ font-size:0.88rem; color:var(--ink-soft); }
+
+  /* ---------- THINGS WE LEARNED ---------- */
+  .learned-list{ margin-top:18px; display:flex; flex-direction:column; gap:14px; }
+  .learned-item{
+    display:flex; gap:14px; align-items:flex-start;
+    background:var(--paper); border:1px solid var(--line); padding:14px 16px;
+  }
+  .learned-no{
+    font-size:1.3rem; color:var(--rust); flex-shrink:0; line-height:1;
+    padding-top:2px;
+  }
+  .learned-lead{ font-weight:700; margin-bottom:4px; }
+  .learned-item p{ font-size:0.92rem; color:var(--ink-soft); margin:0; }
+
+  /* ---------- BOTTOM LINE ---------- */
+  .bottom-line{
+    background:var(--wood);
+    background-image:linear-gradient(180deg, var(--wood-soft) 0%, var(--wood) 100%);
+    color:var(--paper); margin-top:58px; padding:40px 0 42px;
+    position:relative;
+  }
+  .bottom-line .label{
+    font-family:'Allerta Stencil', monospace; font-size:0.8rem; letter-spacing:0.12em;
+    color:var(--blaze); text-transform:uppercase; display:block; margin-bottom:16px;
+  }
+  .bottom-line h2{ font-size:clamp(1.6rem, 5vw, 2.4rem); margin-bottom:16px; }
+  .bottom-line p{ max-width:60ch; color:var(--paper-alt); margin:0 0 0.85em; }
+  .bottom-line strong{ color:var(--paper); }
+  .closed-stamp{
+    margin-top:20px; display:inline-block; border:3px solid var(--blaze); color:var(--blaze);
+    padding:7px 14px; font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase;
+    transform:rotate(3deg); font-family:'Allerta Stencil', monospace;
+  }
+
+  @media (max-width:620px){
+    .score-row{ gap:14px; }
+    .board-grid{ grid-template-columns:1fr; }
+    .state-groups{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="masthead">
+    <div class="wrap">
+      <h1 class="nameplate">CAST <span class="amp">&amp;</span> BLAST</h1>
+      <p class="kicker">Official Weekly Newsletter of a Degenerate Fantasy League</p>
+    </div>
+  </header>
+  <svg class="ridge" viewBox="0 0 800 40" preserveAspectRatio="none" width="100%" height="40" aria-hidden="true"><polygon points="0,0 800,0 800,8 750,30 700,8 650,30 600,8 550,30 500,8 450,30 400,8 350,30 300,8 250,30 200,8 150,30 100,8 50,30 0,8" fill="#382A1E"/></svg>
+
+  <main class="wrap">
+
+    <section class="intro">
+      <span class="label stencil">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="7" stroke="currentColor" stroke-width="1.6"/><line x1="12" y1="1" x2="12" y2="7" stroke="currentColor" stroke-width="1.6"/><line x1="12" y1="17" x2="12" y2="23" stroke="currentColor" stroke-width="1.6"/><line x1="1" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1.6"/><line x1="17" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="1.6"/></svg>
+        Week 2 Recap
+      </span>
+      <p>Some of you are getting good. Some of you are fucked.</p>
+      <p>Week 2 is in the books, and the league is already starting to separate into two groups:</p>
+      <p><strong>People who know what the fuck they’re doing.</strong></p>
+      <p>And <strong>everyone else.</strong></p>
+      <p>Four teams are now sitting at <strong>2-0</strong>.</p>
+      <p>Four others are sitting at <strong>0-2</strong>.</p>
+      <p>And somewhere in the middle, several managers are already pretending they have a plan.</p>
+      <p>Let's review the carnage.</p>
+    </section>
+
+
+    <article class="tag-card tier-trophy">
+      <div class="tag-stub">
+        <span class="tag-no">
+          <svg class="reticle" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="1" x2="12" y2="7" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="17" x2="12" y2="23" stroke="currentColor" stroke-width="1.4"/><line x1="1" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1.4"/><line x1="17" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="1.4"/></svg>
+          TAG No. 01
+        </span>
+        <span class="tier-badge">Trophy Kill</span>
+      </div>
+      <div class="perf"></div>
+      <div class="tag-body">
+        <div class="score-row">
+          <div class="side win">
+            <div class="score">162.82</div>
+            <div class="team-name">Mike &mdash; Hawkeyes Suck</div>
+          </div>
+          <div class="side lose">
+            <div class="score">108.52</div>
+            <div class="team-name">Kenny &mdash; Team Smith</div>
+          </div>
+        </div>
+        <h3>Hawkeyes Are Officially a Problem</h3>
+        <div class="body-copy">
+          <p>Mike followed up his Week 1 demolition with another monster performance.</p>
+          <p><strong>162.82 starter points.</strong></p>
+          <p>Kenny managed <strong>108.52</strong>.</p>
+          <p>That’s a <strong>54.30-point ass beating</strong>.</p>
+          <p>Mike is now <strong>2-0</strong> and looking increasingly annoying.</p>
+        </div>
+        <div class="ruling">
+          <span class="rl-label">League Ruling</span>
+          Mike has officially gone from “maybe he’s good” to <strong>“somebody needs to fucking stop this guy.”</strong>
+        </div>
+      </div>
+    </article>
+
+
+    <article class="tag-card tier-release">
+      <div class="tag-stub">
+        <span class="tag-no">
+          <svg class="reticle" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="1" x2="12" y2="7" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="17" x2="12" y2="23" stroke="currentColor" stroke-width="1.4"/><line x1="1" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1.4"/><line x1="17" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="1.4"/></svg>
+          TAG No. 02
+        </span>
+        <span class="tier-badge">Catch &amp; Release</span>
+      </div>
+      <div class="perf"></div>
+      <div class="tag-body">
+        <div class="score-row">
+          <div class="side win">
+            <div class="score">156.28</div>
+            <div class="team-name">Matt &mdash; Blums Little Flowers</div>
+          </div>
+          <div class="side lose">
+            <div class="score">145.48</div>
+            <div class="team-name">Adam &mdash; Injuries-R-Us</div>
+          </div>
+        </div>
+        <h3>The Flowers Keep Winning</h3>
+        <div class="body-copy">
+          <p>Matt followed his ridiculous <strong>196.76-point Week 1</strong> with another win.</p>
+          <p>This one was much closer.</p>
+          <p>Blums won <strong>156.28 to 145.48</strong>, escaping with a <strong>10.80-point victory</strong>.</p>
+          <p>Matt is now <strong>2-0</strong>.</p>
+          <p>Apparently these little flowers have thorns.</p>
+        </div>
+      </div>
+    </article>
+
+
+    <article class="tag-card tier-trophy">
+      <div class="tag-stub">
+        <span class="tag-no">
+          <svg class="reticle" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="1" x2="12" y2="7" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="17" x2="12" y2="23" stroke="currentColor" stroke-width="1.4"/><line x1="1" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1.4"/><line x1="17" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="1.4"/></svg>
+          TAG No. 03
+        </span>
+        <span class="tier-badge">Trophy Kill</span>
+      </div>
+      <div class="perf"></div>
+      <div class="tag-body">
+        <div class="score-row">
+          <div class="side win">
+            <div class="score">142.78</div>
+            <div class="team-name">Richard &mdash; (.)(.) ShowMeYourTD’s</div>
+          </div>
+          <div class="side lose">
+            <div class="score">91.00</div>
+            <div class="team-name">Jacob &mdash; Cookin With Jacob</div>
+          </div>
+        </div>
+        <h3>Jacob Got Fucking Cooked</h3>
+        <div class="body-copy">
+          <p>Richard handled Jacob <strong>142.78 to 91.00</strong>.</p>
+          <p>That’s a <strong>51.78-point beating</strong>.</p>
+          <p>Richard is now <strong>2-0</strong>.</p>
+          <p>Jacob falls to <strong>1-1</strong> and should probably check the waiver wire for signs of life.</p>
+        </div>
+      </div>
+    </article>
+
+
+    <article class="tag-card tier-harvest">
+      <div class="tag-stub">
+        <span class="tag-no">
+          <svg class="reticle" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="1" x2="12" y2="7" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="17" x2="12" y2="23" stroke="currentColor" stroke-width="1.4"/><line x1="1" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1.4"/><line x1="17" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="1.4"/></svg>
+          TAG No. 04
+        </span>
+        <span class="tier-badge">Solid Harvest</span>
+      </div>
+      <div class="perf"></div>
+      <div class="tag-body">
+        <div class="score-row">
+          <div class="side win">
+            <div class="score">108.46</div>
+            <div class="team-name">Evan &mdash; Trout Whistles</div>
+          </div>
+          <div class="side lose">
+            <div class="score">68.08</div>
+            <div class="team-name">Tommy &mdash; G-Regs 3rd Leg</div>
+          </div>
+        </div>
+        <h3>G-Regs Got Turned Into a Fucking Fish Stick</h3>
+        <div class="body-copy">
+          <p>Evan beat Tommy <strong>108.46 to 68.08</strong>.</p>
+          <p>That’s a <strong>40.38-point victory</strong>.</p>
+          <p>Evan is quietly sitting at <strong>2-0</strong>, while Tommy gets to explain how this was all part of the plan.</p>
+          <p>Sure, Tommy.</p>
+        </div>
+      </div>
+    </article>
+
+
+    <article class="tag-card tier-release">
+      <div class="tag-stub">
+        <span class="tag-no">
+          <svg class="reticle" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="1" x2="12" y2="7" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="17" x2="12" y2="23" stroke="currentColor" stroke-width="1.4"/><line x1="1" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1.4"/><line x1="17" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="1.4"/></svg>
+          TAG No. 05
+        </span>
+        <span class="tier-badge">Catch &amp; Release</span>
+      </div>
+      <div class="perf"></div>
+      <div class="tag-body">
+        <div class="score-row">
+          <div class="side win">
+            <div class="score">117.16</div>
+            <div class="team-name">Sam &mdash; Big Ol Gridddys</div>
+          </div>
+          <div class="side lose">
+            <div class="score">111.98</div>
+            <div class="team-name">Jake &mdash; Burrow These Nuts</div>
+          </div>
+        </div>
+        <h3>The Week’s Least Impressive Victory</h3>
+        <div class="body-copy">
+          <p>Sam escaped with a <strong>117.16 to 111.98</strong> victory.</p>
+          <p>Margin:</p>
+          <p><strong>5.18 points.</strong></p>
+          <p>A win is a win.</p>
+          <p>But let’s not put this one in the Hall of Fame.</p>
+          <p>Sam is now <strong>1-1</strong>.</p>
+          <p>Jake is <strong>0-2</strong>.</p>
+        </div>
+      </div>
+    </article>
+
+
+    <article class="tag-card tier-release">
+      <div class="tag-stub">
+        <span class="tag-no">
+          <svg class="reticle" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="1" x2="12" y2="7" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="17" x2="12" y2="23" stroke="currentColor" stroke-width="1.4"/><line x1="1" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1.4"/><line x1="17" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="1.4"/></svg>
+          TAG No. 06
+        </span>
+        <span class="tier-badge">Catch &amp; Release</span>
+      </div>
+      <div class="perf"></div>
+      <div class="tag-body">
+        <div class="score-row">
+          <div class="side win">
+            <div class="score">153.20</div>
+            <div class="team-name">Jeremy &mdash; Njigbas In Paris</div>
+          </div>
+          <div class="side lose">
+            <div class="score">135.32</div>
+            <div class="team-name">Nick &mdash; Misdemeanor Behavior</div>
+          </div>
+        </div>
+        <h3>Njigbas Is Back From the Dead</h3>
+        <div class="body-copy">
+          <p>Jeremy bounced back from his Week 1 loss with <strong>153.20 points</strong>.</p>
+          <p>That’s a <strong>17.88-point victory</strong> over Nick.</p>
+          <p>Jeremy is now <strong>1-1</strong>.</p>
+          <p>Nick is also <strong>1-1</strong>.</p>
+          <p>The middle of this league is officially a knife fight.</p>
+        </div>
+      </div>
+    </article>
+
+
+    <article class="tag-card tier-trophy">
+      <div class="tag-stub">
+        <span class="tag-no">
+          <svg class="reticle" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="1" x2="12" y2="7" stroke="currentColor" stroke-width="1.4"/><line x1="12" y1="17" x2="12" y2="23" stroke="currentColor" stroke-width="1.4"/><line x1="1" y1="12" x2="7" y2="12" stroke="currentColor" stroke-width="1.4"/><line x1="17" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="1.4"/></svg>
+          TAG No. 07
+        </span>
+        <span class="tier-badge">Trophy Kill</span>
+      </div>
+      <div class="perf"></div>
+      <div class="tag-body">
+        <div class="score-row">
+          <div class="side win">
+            <div class="score">114.96</div>
+            <div class="team-name">🚨 Brett &mdash; To Infinity and Bijan</div>
+          </div>
+          <div class="side lose">
+            <div class="score">62.62</div>
+            <div class="team-name">Chaz &mdash; Johnstonville Brats</div>
+          </div>
+        </div>
+        <h3>Jesus Fucking Christ</h3>
+        <div class="body-copy">
+          <p>There are bad fantasy football days.</p>
+          <p>Then there is <strong>62.62</strong>.</p>
+          <p>Brett absolutely dismantled Chaz <strong>114.96 to 62.62</strong>.</p>
+          <p>That’s a <strong>52.34-point loss</strong>.</p>
+          <p>Chaz is now <strong>0-2</strong>.</p>
+          <p>Brett is <strong>1-1</strong>.</p>
+        </div>
+        <div class="ruling">
+          <span class="rl-label">League Ruling</span>
+          Chaz has officially entered the <strong>“It’s only Week 2”</strong> phase of the season. Which is exactly what someone who’s 0-2 would say.
+        </div>
+      </div>
+    </article>
+
+
+    <section class="banner">
+      <div>
+        <h2>Current Standings</h2>
+        <p class="sub">Two weeks down, twelve to go.</p>
+      </div>
+    </section>
+
+    <div class="standings-wrap">
+      <table class="standings">
+        <thead>
+          <tr><th>Rank</th><th>Manager</th><th>Team</th><th style="text-align:right;">Record</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="rank">🥇</td>
+          <td class="mgr">Matt</td>
+          <td class="team">Blums Little Flowers</td>
+          <td class="record">2-0</td>
+        </tr>
+        <tr>
+          <td class="rank">🥈</td>
+          <td class="mgr">Mike</td>
+          <td class="team">Hawkeyes Suck</td>
+          <td class="record">2-0</td>
+        </tr>
+        <tr>
+          <td class="rank">🥉</td>
+          <td class="mgr">Richard</td>
+          <td class="team">(.)(.) ShowMeYourTD’S</td>
+          <td class="record">2-0</td>
+        </tr>
+        <tr>
+          <td class="rank">4</td>
+          <td class="mgr">Evan</td>
+          <td class="team">Trout Whistles</td>
+          <td class="record">2-0</td>
+        </tr>
+        <tr>
+          <td class="rank">5</td>
+          <td class="mgr">Jeremy</td>
+          <td class="team">Njigbas in Paris</td>
+          <td class="record">1-1</td>
+        </tr>
+        <tr>
+          <td class="rank">6</td>
+          <td class="mgr">Sam</td>
+          <td class="team">Big Ol Gridddys</td>
+          <td class="record">1-1</td>
+        </tr>
+        <tr>
+          <td class="rank">7</td>
+          <td class="mgr">Jacob</td>
+          <td class="team">Cookin With Jacob</td>
+          <td class="record">1-1</td>
+        </tr>
+        <tr>
+          <td class="rank">8</td>
+          <td class="mgr">Tommy</td>
+          <td class="team">G-Regs 3rd Leg</td>
+          <td class="record">1-1</td>
+        </tr>
+        <tr>
+          <td class="rank">9</td>
+          <td class="mgr">Nick</td>
+          <td class="team">Misdemeanor Behavior</td>
+          <td class="record">1-1</td>
+        </tr>
+        <tr>
+          <td class="rank">10</td>
+          <td class="mgr">Brett</td>
+          <td class="team">To Infinity and Bijan</td>
+          <td class="record">1-1</td>
+        </tr>
+        <tr>
+          <td class="rank">11</td>
+          <td class="mgr">Jake</td>
+          <td class="team">Burrow These Nuts</td>
+          <td class="record">0-2</td>
+        </tr>
+        <tr>
+          <td class="rank">12</td>
+          <td class="mgr">Adam</td>
+          <td class="team">Injuries-R-Us</td>
+          <td class="record">0-2</td>
+        </tr>
+        <tr>
+          <td class="rank">13</td>
+          <td class="mgr">Kenny</td>
+          <td class="team">Team Smith</td>
+          <td class="record">0-2</td>
+        </tr>
+        <tr>
+          <td class="rank">14</td>
+          <td class="mgr">Chaz</td>
+          <td class="team">Johnstonville Brats</td>
+          <td class="record">0-2</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <section class="banner">
+      <div>
+        <h2>The State of the League</h2>
+      </div>
+    </section>
+
+    <div class="state-groups">
+      <div class="state-card" style="--accent:var(--forest);">
+        <h4>The Undefeated</h4>
+        <p>Matt, Mike, Richard and Evan are sitting pretty at 2-0.</p>
+      </div>
+      <div class="state-card" style="--accent:var(--rust);">
+        <h4>The Shitshow in the Middle</h4>
+        <p>Jeremy, Sam, Jacob, Tommy, Nick and Brett are all 1-1.</p>
+      </div>
+      <div class="state-card" style="--accent:var(--blaze-dark);">
+        <h4>The Fucking Basement</h4>
+        <p>Jake, Adam, Kenny and Chaz are all 0-2.</p>
+      </div>
+    </div>
+
+    <div class="recap">
+      <p>Four managers are still undefeated.</p>
+      <p>Four managers still haven’t figured out how to win a goddamn game.</p>
+      <p>And Chaz is currently staring at a <strong>62.62-point Week 2</strong> wondering where it all went wrong.</p>
+    </div>
+
+    <section class="trophy-room">
+      <div class="banner" style="border-color:var(--rust);">
+        <div>
+          <h2>🚨 Week 2 Crime Report</h2>
+        </div>
+      </div>
+      <div class="board">
+        <div class="board-grid">
+
+          <div class="plaque">
+            <span class="mount-no">No. 01</span>
+            <h4>🥇 Biggest Dick Performance</h4>
+            <div class="who">Mike &mdash; Hawkeyes Suck</div>
+            <div class="stat">162.82 points</div>
+            <p>Two weeks. Two wins. Two monster performances.</p>
+          </div>
+
+          <div class="plaque">
+            <span class="mount-no">No. 02</span>
+            <h4>💀 Biggest Ass Beating</h4>
+            <div class="who">Mike over Kenny</div>
+            <div class="stat">54.30 points</div>
+            <p>Kenny never had a fucking chance.</p>
+          </div>
+
+          <div class="plaque">
+            <span class="mount-no">No. 03</span>
+            <h4>🩼 Biggest Medical Emergency</h4>
+            <div class="who">Chaz</div>
+            <div class="stat">62.62 points. Projected: 114.44</div>
+            <p>Someone get this man a defibrillator.</p>
+          </div>
+
+          <div class="plaque">
+            <span class="mount-no">No. 04</span>
+            <h4>🗑️ Biggest Dumpster Fire</h4>
+            <div class="who">Tommy</div>
+            <div class="stat">68.08 points, 55.75 below projection</div>
+            <p>That’s a fantasy football emergency.</p>
+          </div>
+
+          <div class="plaque">
+            <span class="mount-no">No. 05</span>
+            <h4>🥴 Most Depressing Victory</h4>
+            <div class="who">Sam</div>
+            <div class="stat">won by 5.18</div>
+            <p>A win is a win. But let’s not get carried away.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="trophy-room">
+      <div class="banner" style="border-color:var(--forest);">
+        <div>
+          <h2>🏅 Week 2 Awards</h2>
+        </div>
+      </div>
+      <div class="board board-awards">
+        <div class="board-grid">
+
+          <div class="plaque">
+            <span class="mount-no">No. 01</span>
+            <h4>👑 Manager of the Week</h4>
+            <div class="who">Mike</div>
+            <div class="stat">162.82 points. Two straight wins.</div>
+            <p>Enjoy it while it lasts, asshole.</p>
+          </div>
+
+          <div class="plaque">
+            <span class="mount-no">No. 02</span>
+            <h4>🤡 Clown of the Week</h4>
+            <div class="who">Chaz</div>
+            <div class="stat">62.62 points</div>
+            <p>There really isn’t much else to say.</p>
+          </div>
+
+          <div class="plaque">
+            <span class="mount-no">No. 03</span>
+            <h4>🍆 Ballsiest Performance</h4>
+            <div class="who">Jeremy</div>
+            <div class="stat">153.20 points after a disappointing Week 1</div>
+            <p>That’s how you bounce back.</p>
+          </div>
+
+          <div class="plaque">
+            <span class="mount-no">No. 04</span>
+            <h4>🪦 Funeral of the Week</h4>
+            <div class="who">Tommy</div>
+            <div class="stat">68.08 points, buried 55.75 points below projection</div>
+            <p>No flowers necessary.</p>
+          </div>
+
+          <div class="plaque">
+            <span class="mount-no">No. 05</span>
+            <h4>🧯 Hottest Start</h4>
+            <div class="who">Matt</div>
+            <div class="stat">196.76 in Week 1. 156.28 in Week 2. 2-0.</div>
+            <p>The Flowers are growing. Unfortunately.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="banner">
+        <div>
+          <h2>🍺 Things We Learned in Week 2</h2>
+        </div>
+      </div>
+      <div class="learned-list">
+
+        <div class="learned-item">
+          <span class="learned-no stencil">01</span>
+          <div>
+            <div class="learned-lead">Mike might actually be good.</div>
+            <p>Two weeks of evidence is starting to become annoying.</p>
+          </div>
+        </div>
+
+        <div class="learned-item">
+          <span class="learned-no stencil">02</span>
+          <div>
+            <div class="learned-lead">Matt is still rolling.</div>
+            <p>The Week 1 explosion wasn’t a fluke.</p>
+          </div>
+        </div>
+
+        <div class="learned-item">
+          <span class="learned-no stencil">03</span>
+          <div>
+            <div class="learned-lead">Richard is 2-0.</div>
+            <p>And you know what that means. We’re going to hear about it. A lot.</p>
+          </div>
+        </div>
+
+        <div class="learned-item">
+          <span class="learned-no stencil">04</span>
+          <div>
+            <div class="learned-lead">Being projected to score 130 doesn’t mean shit.</div>
+            <p>Just ask Tommy. Or Chaz. Or Jacob.</p>
+          </div>
+        </div>
+
+        <div class="learned-item">
+          <span class="learned-no stencil">05</span>
+          <div>
+            <div class="learned-lead">0-2 is getting uncomfortable.</div>
+            <p>Four managers are now staring at an empty win column. At some point, “It’s only Week 2” stops being comforting. That point is coming.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="bottom-line">
+    <div class="wrap">
+      <span class="label">Back at Camp</span>
+      <h2>The Bottom Line</h2>
+      <p>After two weeks, we have <strong>four undefeated teams</strong> and <strong>four winless teams</strong>.</p>
+      <p>The middle is a fucking mess.</p>
+      <p>The top of the league is starting to look dangerous.</p>
+      <p>The bottom is starting to panic.</p>
+      <p>And we’re still 12 weeks away from finding out who actually knows what the hell they’re doing.</p>
+      <p>For now, enjoy your wins.</p>
+      <div class="closed-stamp">Week 2 Is a Wrap</div>
+    </div>
+  </section>
+
+</body>
+</html>
